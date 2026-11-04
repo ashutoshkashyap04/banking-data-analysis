@@ -296,3 +296,45 @@ FROM support_tickets st
 LEFT JOIN customers c
     ON st.customer_id = c.customer_id
 WHERE c.customer_id IS NULL;
+
+-- Checking invalid types or status
+
+SELECT DISTINCT txn_type
+FROM transactions;
+
+SELECT DISTINCT status
+FROM accounts;
+
+SELECT DISTINCT status
+FROM loans;
+
+-- Checking invalid values
+
+SELECT *
+FROM transactions
+WHERE amount < 0;
+
+SELECT *
+FROM accounts
+WHERE open_date > CURRENT_DATE;
+
+SELECT *
+FROM cards
+WHERE expiry_date < issue_date;
+
+-- Logical inconsistencies
+
+-- Credit scores outside the conventional 300–900 range
+SELECT *
+FROM customers
+WHERE credit_score < 300 OR credit_score > 900;
+
+-- Invalid loan amounts
+SELECT *
+FROM loans
+WHERE loan_amount <= 0;
+
+-- Invalid interest rates
+SELECT *
+FROM loans
+WHERE interest_rate < 0;
