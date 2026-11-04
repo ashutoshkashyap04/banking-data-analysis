@@ -209,3 +209,90 @@ SELECT
     COUNT(*) FILTER (WHERE amount IS NULL) AS missing_amount,
     COUNT(*) FILTER (WHERE is_fraud IS NULL) AS missing_is_fraud
 FROM card_transactions;
+
+-- Checking invalid foreign keys
+
+-- transactions -> accounts
+SELECT t.*
+FROM transactions t
+LEFT JOIN accounts a
+	ON t.account_id = a.account_id
+WHERE a.account_id IS NULL;
+
+-- accounts -> customers
+SELECT a.*
+FROM accounts a
+LEFT JOIN customers c
+	ON a.customer_id = c.customer_id
+WHERE c.customer_id IS NULL;
+
+-- accounts -> branches
+SELECT a.*
+FROM accounts a
+LEFT JOIN branches b
+	ON a.branch_id = b.branch_id
+WHERE b.branch_id IS NULL;
+
+-- loans -> customers
+
+SELECT l.*
+FROM loans l
+LEFT JOIN customers c
+    ON l.customer_id = c.customer_id
+WHERE c.customer_id IS NULL;
+
+-- loans -> branches
+
+SELECT l.*
+FROM loans l
+LEFT JOIN branches b
+    ON l.branch_id = b.branch_id
+WHERE b.branch_id IS NULL;
+
+-- cards -> customers
+
+SELECT ca.*
+FROM cards ca
+LEFT JOIN customers c
+    ON ca.customer_id = c.customer_id
+WHERE c.customer_id IS NULL;
+
+-- cards -> accounts 
+
+SELECT ca.*
+FROM cards ca
+LEFT JOIN accounts a
+    ON ca.account_id = a.account_id
+WHERE a.account_id IS NULL;
+
+-- loan_payments -> loans
+
+SELECT lp.*
+FROM loan_payments lp
+LEFT JOIN loans l
+    ON lp.loan_id = l.loan_id
+WHERE l.loan_id IS NULL;
+
+-- card_transactions -> cards
+
+SELECT ct.*
+FROM card_transactions ct
+LEFT JOIN cards c
+    ON ct.card_id = c.card_id
+WHERE c.card_id IS NULL;
+
+-- emoloyees -> branches
+
+SELECT e.*
+FROM employees e
+LEFT JOIN branches b
+    ON e.branch_id = b.branch_id
+WHERE b.branch_id IS NULL;
+
+-- support_tickets -> customers
+
+SELECT st.*
+FROM support_tickets st
+LEFT JOIN customers c
+    ON st.customer_id = c.customer_id
+WHERE c.customer_id IS NULL;
